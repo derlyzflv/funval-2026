@@ -29,13 +29,258 @@
         "tags": [
           "Menu"
         ],
-        "description": "",
+        "summary": "Listar todos los productos del menú",
+        "description": "Obtiene la lista completa de productos disponibles en el menú.",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Lista de productos",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "example": 1
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Chaufa de Pollo"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "Arroz frito al wok con trozos de pollo, huevo, cebolla china y sillao"
+                  },
+                  "price": {
+                    "type": "string",
+                    "example": "15.00"
+                  },
+                  "stock": {
+                    "type": "number",
+                    "example": 45
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error al obtener el menú"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Menu"
+        ],
+        "summary": "Crear un nuevo producto",
+        "description": "Registra un nuevo producto en el menú.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Datos del producto a crear",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "Pollo a la Brasa"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Medio pollo a la brasa marinado con especias peruanas, acompañado de papas fritas y ensalada"
+                },
+                "price": {
+                  "type": "string",
+                  "example": "27.00"
+                },
+                "stock": {
+                  "type": "number",
+                  "example": 25
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Producto creado correctamente",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 2
+                },
+                "name": {
+                  "type": "string",
+                  "example": "Lomo Saltado"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Trozos de lomo fino salteados al wok con cebolla, tomate, papas fritas y arroz"
+                },
+                "price": {
+                  "type": "string",
+                  "example": "25.00"
+                },
+                "stock": {
+                  "type": "number",
+                  "example": 0
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Error al crear el producto"
+          }
+        }
+      }
+    },
+    "/api/menu/{id}": {
+      "get": {
+        "tags": [
+          "Menu"
+        ],
+        "summary": "Obtener producto por ID",
+        "description": "Busca y retorna un producto del menú según su ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID numérico del producto"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Producto encontrado",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "name": {
+                  "type": "string",
+                  "example": "Chaufa de Pollo"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Arroz frito al wok con trozos de pollo, huevo, cebolla china y sillao"
+                },
+                "price": {
+                  "type": "string",
+                  "example": "15.00"
+                },
+                "stock": {
+                  "type": "number",
+                  "example": 45
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Producto no encontrado"
+          },
+          "500": {
+            "description": "Error al obtener el producto"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Menu"
+        ],
+        "summary": "Actualizar un producto",
+        "description": "Actualiza los datos de un producto existente según su ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID numérico del producto",
+            "minimum": 1,
+            "example": 1
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Datos actualizados del producto",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "Chaufa de Pollo"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Arroz frito al wok con trozos de pollo, huevo, cebolla china y sillao"
+                },
+                "price": {
+                  "type": "string",
+                  "example": "15.00"
+                },
+                "stock": {
+                  "type": "number",
+                  "example": 127
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Producto actualizado correctamente",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "name": {
+                  "type": "string",
+                  "example": "Chaufa de Pollo"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Arroz frito al wok con trozos de pollo, huevo, cebolla china y sillao"
+                },
+                "price": {
+                  "type": "string",
+                  "example": "15.00"
+                },
+                "stock": {
+                  "type": "number",
+                  "example": 127
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Producto no encontrado"
+          },
+          "500": {
+            "description": "Error al actualizar el producto"
           }
         }
       }

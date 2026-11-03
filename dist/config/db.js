@@ -6,5 +6,6 @@ const pool = new Pool({
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
 });
+export const query = (text, params) => pool.query(text, params);
 export default pool;
 //# sourceMappingURL=db.js.map
