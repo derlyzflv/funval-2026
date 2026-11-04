@@ -57,8 +57,8 @@ export const getProduct = async (req, res) => {
         }
     */
     try {
-        const { id } = req.params;
-        const product = await ProductModel.getProductById(Number(id));
+        const id = Number(req.params.id);
+        const product = await ProductModel.getProductById(id);
         if (!product) {
             res.status(404).json({ error: "Producto no encontrado" });
             return;
@@ -80,9 +80,10 @@ export const createProduct = async (req, res) => {
             description: 'Datos del producto a crear',
             required: true,
             schema: {
-                name: "Lomo Saltado",
-                description: "Trozos de lomo fino salteados al wok con cebolla, tomate, papas fritas y arroz",
-                price: 25.00
+                "name": "Pollo a la Brasa",
+                "description": "Medio pollo a la brasa marinado con especias peruanas, acompañado de papas fritas y ensalada",
+                "price": 27.00,
+                "stock": 25
             }
         }
         #swagger.responses[201] = {
@@ -95,13 +96,16 @@ export const createProduct = async (req, res) => {
                 stock: 0
             }
         }
+        #swagger.responses[400] = {
+            description: 'Error de validación en los datos enviados'
+        }
         #swagger.responses[500] = {
             description: 'Error al crear el producto'
         }
     */
     try {
-        const { name, description, price } = req.body;
-        const newProduct = await ProductModel.insertProduct(name, description, price);
+        const { name, description, price, stock } = req.body;
+        const newProduct = await ProductModel.insertProduct(name, description, price, stock);
         res.status(201).json(newProduct);
     }
     catch (error) {
@@ -127,20 +131,24 @@ export const updateProduct = async (req, res) => {
             description: 'Datos actualizados del producto',
             required: true,
             schema: {
-                name: "Chaufa de Pollo Especial",
+                name: "Chaufa de Pollo",
                 description: "Arroz frito al wok con trozos de pollo, huevo, cebolla china y sillao",
-                price: 18.00
+                price: 15.00,
+                stock: 127
             }
         }
         #swagger.responses[200] = {
             description: 'Producto actualizado correctamente',
             schema: {
                 id: 1,
-                name: "Chaufa de Pollo Especial",
+                name: "Chaufa de Pollo",
                 description: "Arroz frito al wok con trozos de pollo, huevo, cebolla china y sillao",
-                price: "18.00",
-                stock: 45
+                price: "15.00",
+                stock: 127
             }
+        }
+        #swagger.responses[400] = {
+            description: 'Error de validación en los datos enviados'
         }
         #swagger.responses[404] = {
             description: 'Producto no encontrado'
@@ -150,9 +158,9 @@ export const updateProduct = async (req, res) => {
         }
     */
     try {
-        const { id } = req.params;
-        const { name, description, price } = req.body;
-        const updated = await ProductModel.updateProduct(Number(id), name, description, price);
+        const id = Number(req.params.id);
+        const { name, description, price, stock } = req.body;
+        const updated = await ProductModel.updateProduct(id, name, description, price, stock);
         if (!updated) {
             res.status(404).json({ error: "Producto no encontrado" });
             return;

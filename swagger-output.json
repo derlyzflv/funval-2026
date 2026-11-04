@@ -95,8 +95,8 @@
                   "example": "Medio pollo a la brasa marinado con especias peruanas, acompañado de papas fritas y ensalada"
                 },
                 "price": {
-                  "type": "string",
-                  "example": "27.00"
+                  "type": "number",
+                  "example": 27
                 },
                 "stock": {
                   "type": "number",
@@ -137,6 +137,9 @@
                 "name": "main"
               }
             }
+          },
+          "400": {
+            "description": "Error de validación en los datos enviados"
           },
           "500": {
             "description": "Error al crear el producto"
@@ -233,8 +236,8 @@
                   "example": "Arroz frito al wok con trozos de pollo, huevo, cebolla china y sillao"
                 },
                 "price": {
-                  "type": "string",
-                  "example": "15.00"
+                  "type": "number",
+                  "example": 15
                 },
                 "stock": {
                   "type": "number",
@@ -275,6 +278,9 @@
                 "name": "main"
               }
             }
+          },
+          "400": {
+            "description": "Error de validación en los datos enviados"
           },
           "404": {
             "description": "Producto no encontrado"

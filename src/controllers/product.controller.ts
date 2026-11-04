@@ -58,8 +58,8 @@ export const getProduct = async (req: Request, res: Response) => {
         }
     */
     try {
-        const { id } = req.params;
-        const product = await ProductModel.getProductById(Number(id));
+        const id = Number(req.params.id);
+        const product = await ProductModel.getProductById(id);
 
         if (!product) {
             res.status(404).json({ error: "Producto no encontrado" });
@@ -85,7 +85,7 @@ export const createProduct = async (req: Request, res: Response) => {
             schema: {
                 "name": "Pollo a la Brasa",
                 "description": "Medio pollo a la brasa marinado con especias peruanas, acompañado de papas fritas y ensalada",
-                "price": "27.00",
+                "price": 27.00,
                 "stock": 25
             }
         }
@@ -98,6 +98,9 @@ export const createProduct = async (req: Request, res: Response) => {
                 price: "25.00",
                 stock: 0
             }
+        }
+        #swagger.responses[400] = {
+            description: 'Error de validación en los datos enviados'
         }
         #swagger.responses[500] = {
             description: 'Error al crear el producto'
@@ -139,7 +142,7 @@ export const updateProduct = async (req: Request, res: Response) => {
             schema: {
                 name: "Chaufa de Pollo",
                 description: "Arroz frito al wok con trozos de pollo, huevo, cebolla china y sillao",
-                price: "15.00",
+                price: 15.00,
                 stock: 127
             }
         }
@@ -153,6 +156,9 @@ export const updateProduct = async (req: Request, res: Response) => {
                 stock: 127
             }
         }
+        #swagger.responses[400] = {
+            description: 'Error de validación en los datos enviados'
+        }
         #swagger.responses[404] = {
             description: 'Producto no encontrado'
         }
@@ -161,10 +167,10 @@ export const updateProduct = async (req: Request, res: Response) => {
         }
     */
     try {
-        const { id } = req.params;
+        const id = Number(req.params.id);
         const { name, description, price, stock } = req.body;
         const updated = await ProductModel.updateProduct(
-            Number(id),
+            id,
             name,
             description,
             price,
