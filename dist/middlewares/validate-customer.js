@@ -1,0 +1,20 @@
+import { ZodObject, z } from "zod";
+import { createCustomerSchema } from "../schemas/customerSchema.js";
+export function validateCustomerSchema(schema) {
+    return (req, res, next) => {
+        const result = schema.safeParse(req.body);
+        if (!result.success) {
+            const flattened = z.flattenError(result.error);
+            res.status(400).json({
+                status: "error",
+                message: "Error de validación en los datos enviados",
+                errors: flattened.fieldErrors,
+            });
+            return;
+        }
+        req.body = result.data;
+        next();
+    };
+}
+export const validateCustomer = validateCustomerSchema(createCustomerSchema);
+//# sourceMappingURL=validate-customer.js.map

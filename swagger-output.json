@@ -290,6 +290,255 @@
           }
         }
       }
+    },
+    "/api/customers": {
+      "get": {
+        "tags": [
+          "Customers"
+        ],
+        "summary": "Listar todos los clientes",
+        "description": "Obtiene la lista completa de clientes registrados.",
+        "responses": {
+          "200": {
+            "description": "Lista de clientes",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "example": 1
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Ana Torres"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "ana@gmail.com"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "example": "984233845"
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Error al obtener los clientes"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Customers"
+        ],
+        "summary": "Crear un nuevo cliente",
+        "description": "Registra un nuevo cliente en la base de datos.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Datos del cliente a crear",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "Roberto Sánchez"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "roberto@gmail.com"
+                },
+                "phone": {
+                  "type": "string",
+                  "example": "998877665"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Cliente creado correctamente",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 9
+                },
+                "name": {
+                  "type": "string",
+                  "example": "Roberto Sánchez"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "roberto@gmail.com"
+                },
+                "phone": {
+                  "type": "string",
+                  "example": "998877665"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Error de validación en los datos enviados"
+          },
+          "409": {
+            "description": "El email ya está registrado"
+          },
+          "500": {
+            "description": "Error al crear el cliente"
+          }
+        }
+      }
+    },
+    "/api/customers/{id}": {
+      "get": {
+        "tags": [
+          "Customers"
+        ],
+        "summary": "Obtener cliente por ID",
+        "description": "Busca y retorna un cliente según su ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID numérico del cliente"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cliente encontrado",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "name": {
+                  "type": "string",
+                  "example": "Ana Torres"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "ana@gmail.com"
+                },
+                "phone": {
+                  "type": "string",
+                  "example": "984233845"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Cliente no encontrado"
+          },
+          "500": {
+            "description": "Error al obtener el cliente"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Customers"
+        ],
+        "summary": "Actualizar un cliente",
+        "description": "Actualiza los datos de un cliente existente según su ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID numérico del cliente",
+            "minimum": 1,
+            "example": 1
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Datos actualizados del cliente",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "Ana Torres"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "ana@gmail.com"
+                },
+                "phone": {
+                  "type": "string",
+                  "example": "984233845"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cliente actualizado correctamente",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "name": {
+                  "type": "string",
+                  "example": "Ana Torres"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "ana@gmail.com"
+                },
+                "phone": {
+                  "type": "string",
+                  "example": "984233845"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Error de validación en los datos enviados"
+          },
+          "404": {
+            "description": "Cliente no encontrado"
+          },
+          "409": {
+            "description": "El email ya está registrado por otro cliente"
+          },
+          "500": {
+            "description": "Error al actualizar el cliente"
+          }
+        }
+      }
     }
   }
 }
