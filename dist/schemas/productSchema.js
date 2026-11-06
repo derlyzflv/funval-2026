@@ -1,19 +1,19 @@
 import { z } from "zod";
 export const createProductSchema = z.object({
     name: z
-        .string("El nombre es obligatorio")
+        .string()
         .trim()
         .min(1, "El nombre no puede estar vacío")
         .max(100, "El nombre no puede superar los 100 caracteres"),
     description: z
-        .string("La descripción es obligatoria")
+        .string()
         .trim()
         .min(1, "La descripción no puede estar vacía"),
     price: z.coerce
-        .number("El precio debe ser un número")
+        .number()
         .positive("El precio debe ser mayor a cero"),
     stock: z.coerce
-        .number("El stock debe ser un número")
+        .number()
         .int("El stock debe ser un número entero")
         .min(0, "El stock debe ser mayor o igual a cero")
         .optional(),
