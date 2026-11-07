@@ -1,9 +1,37 @@
 import { query } from "../config/db.js";
 // Modelo para la tabla de "products"
 export const ProductModel = {
-    async getAllProducts() {
-        const { rows } = await query("SELECT * FROM products ORDER BY id ASC");
-        return rows;
+    async getAllProducts(filters) {
+        const { name, maxPrice, page, limit } = filters;
+        let sqlBase = "WHERE 1=1";
+        const values = [];
+        let paramIndex = 1;
+        if (name) {
+            sqlBase += ` AND name ILIKE $${paramIndex}`;
+            values.push(`%${name}%`);
+            paramIndex++;
+        }
+        if (maxPrice !== undefined) {
+            sqlBase += ` AND price <= $${paramIndex}`;
+            values.push(maxPrice);
+            paramIndex++;
+        }
+        const countQuery = `SELECT COUNT(*) FROM products ${sqlBase}`;
+        const countResult = await query(countQuery, values);
+        const totalItem = parseInt(countResult.rows[0].count, 10);
+        const offset = (page - 1) * limit;
+        const dataQuery = `SELECT * FROM products ${sqlBase} ORDER BY id ASC LIMIT $${paramIndex} OFFSET $${paramIndex + 1}`;
+        const queryValues = [...values, limit, offset];
+        const { rows } = await query(dataQuery, queryValues);
+        return {
+            data: rows,
+            pagination: {
+                totalItem,
+                itemsPerPage: limit,
+                currentPage: page,
+                totalPages: Math.ceil(totalItem / limit),
+            },
+        };
     },
     async getProductById(id) {
         const { rows } = await query("SELECT * FROM products WHERE id=$1", [id]);

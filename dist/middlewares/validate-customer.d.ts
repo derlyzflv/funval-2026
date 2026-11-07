@@ -1,5 +1,3 @@
-import type { Response, Request, NextFunction } from "express";
-import { ZodObject } from "zod";
-export declare function validateCustomerSchema(schema: ZodObject): (req: Request, res: Response, next: NextFunction) => void;
-export declare const validateCustomer: (req: Request, res: Response, next: NextFunction) => void;
+export declare const validateCreateCustomer: (req: import("express").Request, res: import("express").Response, next: import("express").NextFunction) => void;
+export declare const validateUpdateCustomer: (req: import("express").Request, res: import("express").Response, next: import("express").NextFunction) => void;
 //# sourceMappingURL=validate-customer.d.ts.map

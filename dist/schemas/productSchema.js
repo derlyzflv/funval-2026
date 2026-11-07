@@ -19,6 +19,24 @@ export const createProductSchema = z.object({
         .optional(),
 });
 export const updateProductSchema = createProductSchema.partial();
+export const getProductsQuerySchema = z.object({
+    name: z.string().optional(),
+    maxPrice: z
+        .string()
+        .regex(/^\d+(\.\d+)?$/, "el maxPrice debe ser un numero")
+        .transform(Number)
+        .optional(),
+    page: z
+        .string()
+        .regex(/^\d+$/, "la page debe ser un numero")
+        .transform(Number)
+        .default(1),
+    limit: z
+        .string()
+        .regex(/^\d+$/, "el limite debe ser un numero")
+        .transform(Number)
+        .default(10),
+});
 /* CREATE TABLE products (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
