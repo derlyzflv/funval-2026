@@ -1,31 +1,91 @@
 import { type Request, type Response } from "express";
 import { ProductModel } from "../models/product.model.js";
+import {
+    getProductsQuerySchema,
+    type GetProductQueryInput,
+} from "../schemas/productSchema.js";
 
-export const getMenu = async (req: Request, res: Response) => {
+export const getMenu = async (
+    req: Request<{}, {}, {}, GetProductQueryInput>,
+    res: Response
+) => {
     /*
         #swagger.tags = ['Menu']
         #swagger.summary = 'Listar todos los productos del menú'
-        #swagger.description = 'Obtiene la lista completa de productos disponibles en el menú.'
+        #swagger.description = 'Obtiene la lista de productos disponibles en el menú con filtros opcionales y paginación.'
+        #swagger.parameters['name'] = {
+            in: 'query',
+            description: 'Filtrar productos por nombre',
+            required: false,
+            type: 'string'
+        }
+        #swagger.parameters['maxPrice'] = {
+            in: 'query',
+            description: 'Filtrar productos con precio menor o igual a maxPrice',
+            required: false,
+            type: 'number'
+        }
+        #swagger.parameters['page'] = {
+            in: 'query',
+            description: 'Número de página',
+            required: false,
+            type: 'integer'
+        }
+        #swagger.parameters['limit'] = {
+            in: 'query',
+            description: 'Cantidad de elementos por página',
+            required: false,
+            type: 'integer'
+        }
         #swagger.responses[200] = {
-            description: 'Lista de productos',
-            schema: [{
-                id: 1,
-                name: "Chaufa de Pollo",
-                description: "Arroz frito al wok con trozos de pollo, huevo, cebolla china y sillao",
-                price: "15.00",
-                stock: 45
-            }]
+            description: 'Lista de productos paginada',
+            schema: {
+                data: [{
+                    id: 1,
+                    name: "Chaufa de Pollo",
+                    description: "Arroz frito al wok con trozos de pollo, huevo, cebolla china y sillao",
+                    price: "15.00",
+                    stock: 45
+                }],
+                pagination: {
+                    totalItem: 14,
+                    itemsPerPage: 10,
+                    currentPage: 1,
+                    totalPages: 2
+                }
+            }
+        }
+        #swagger.responses[400] = {
+            description: 'Parámetros de consulta inválidos'
         }
         #swagger.responses[500] = {
             description: 'Error al obtener el menú'
         }
     */
     try {
-        const products = await ProductModel.getAllProducts();
-        res.json(products);
-    } catch (error) {
+        const result = getProductsQuerySchema.safeParse(req.query);
+
+        if (!result.success) {
+            return res.status(400).json({
+                error: "Parámetros de consulta inválidos",
+                detalles: result.error.format(),
+            });
+        }
+
+        const { name, maxPrice, limit, page } = result.data;
+        const products = await ProductModel.getAllProducts({
+            name,
+            maxPrice,
+            limit,
+            page,
+        });
+        res.status(200).json(products);
+    } catch (error: any) {
         console.error(error);
-        res.status(500).json({ error: "Error al obtener el menú" });
+        res.status(500).json({
+            error: "Error al obtener el menú",
+            detalles: error.message,
+        });
     }
 };
 

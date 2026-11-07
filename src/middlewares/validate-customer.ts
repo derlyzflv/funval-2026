@@ -1,6 +1,7 @@
+/*
 import type { Response, Request, NextFunction } from "express";
 import { ZodObject, z } from "zod";
-import { createCustomerSchema } from "../schemas/customerSchema.js";
+import { createCustomerSchema, updateCustomerSchema } from "../schemas/customerSchema.js";
 
 export function validateCustomerSchema(schema: ZodObject) {
     return (req: Request, res: Response, next: NextFunction) => {
@@ -21,5 +22,11 @@ export function validateCustomerSchema(schema: ZodObject) {
     };
 }
 
-export const validateCustomer = validateCustomerSchema(createCustomerSchema);
+export const validateCreateCustomer = validateCustomerSchema(createCustomerSchema);
+export const validateUpdateCustomer = validateCustomerSchema(updateCustomerSchema);
+*/
+import { validateSchema } from "./validateSchema.js";
+import { createCustomerSchema, updateCustomerSchema } from "../schemas/customerSchema.js";
 
+export const validateCreateCustomer = validateSchema(createCustomerSchema);
+export const validateUpdateCustomer = validateSchema(updateCustomerSchema);

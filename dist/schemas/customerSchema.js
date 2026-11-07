@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { email, z } from "zod";
 export const createCustomerSchema = z.object({
     name: z
         .string("El nombre es obligatorio")

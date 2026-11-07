@@ -22,8 +22,28 @@ export const createProductSchema = z.object({
 
 export const updateProductSchema = createProductSchema.partial();
 
+export const getProductsQuerySchema = z.object({
+    name: z.string().optional(),
+    maxPrice: z
+        .string()
+        .regex(/^\d+(\.\d+)?$/, "el maxPrice debe ser un numero")
+        .transform(Number)
+        .optional(),
+    page: z
+        .string()
+        .regex(/^\d+$/, "la page debe ser un numero")
+        .transform(Number)
+        .default(1),
+    limit: z
+        .string()
+        .regex(/^\d+$/, "el limite debe ser un numero")
+        .transform(Number)
+        .default(10),
+});
+
 // Extraer el tipo de dato para TypeScript desde el schema que creamos
 export type CreateProductInput = z.infer<typeof createProductSchema>;
+export type GetProductQueryInput = z.infer<typeof getProductsQuerySchema>;
 
 /* CREATE TABLE products (
     id SERIAL PRIMARY KEY,

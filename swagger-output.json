@@ -26,48 +26,10 @@
     },
     "/api/menu": {
       "get": {
-        "tags": [
-          "Menu"
-        ],
-        "summary": "Listar todos los productos del menú",
-        "description": "Obtiene la lista completa de productos disponibles en el menú.",
+        "description": "",
         "responses": {
-          "200": {
-            "description": "Lista de productos",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "number",
-                    "example": 1
-                  },
-                  "name": {
-                    "type": "string",
-                    "example": "Chaufa de Pollo"
-                  },
-                  "description": {
-                    "type": "string",
-                    "example": "Arroz frito al wok con trozos de pollo, huevo, cebolla china y sillao"
-                  },
-                  "price": {
-                    "type": "string",
-                    "example": "15.00"
-                  },
-                  "stock": {
-                    "type": "number",
-                    "example": 45
-                  }
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
-          },
-          "500": {
-            "description": "Error al obtener el menú"
+          "default": {
+            "description": ""
           }
         }
       },
@@ -536,6 +498,174 @@
           },
           "500": {
             "description": "Error al actualizar el cliente"
+          }
+        }
+      }
+    },
+    "/api/sales": {
+      "get": {
+        "tags": [
+          "Sales"
+        ],
+        "summary": "Listar todas las ventas",
+        "description": "Obtiene la lista completa de ventas incluyendo el nombre del cliente.",
+        "responses": {
+          "200": {
+            "description": "Lista de ventas",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "example": 1
+                  },
+                  "customer_id": {
+                    "type": "number",
+                    "example": 1
+                  },
+                  "customer_name": {
+                    "type": "string",
+                    "example": "Ana Torres"
+                  },
+                  "created_at": {
+                    "type": "string",
+                    "example": "2026-11-07T12:00:00.000Z"
+                  },
+                  "total_amount": {
+                    "type": "string",
+                    "example": "52.00"
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Error al obtener las ventas"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Sales"
+        ],
+        "summary": "Crear una nueva venta",
+        "description": "Registra una nueva venta asociada a un cliente.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Datos de la venta a crear",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "customer_id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "total_amount": {
+                  "type": "number",
+                  "example": 52
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Venta creada correctamente",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "customer_id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "created_at": {
+                  "type": "string",
+                  "example": "2026-11-07T12:00:00.000Z"
+                },
+                "total_amount": {
+                  "type": "string",
+                  "example": "52.00"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Error de validación en los datos enviados"
+          },
+          "500": {
+            "description": "Error al crear la venta"
+          }
+        }
+      }
+    },
+    "/api/sales/{id}": {
+      "get": {
+        "tags": [
+          "Sales"
+        ],
+        "summary": "Obtener venta por ID",
+        "description": "Busca y retorna una venta según su ID incluyendo el nombre del cliente.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID numérico de la venta"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Venta encontrada",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "customer_id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "customer_name": {
+                  "type": "string",
+                  "example": "Ana Torres"
+                },
+                "created_at": {
+                  "type": "string",
+                  "example": "2026-11-07T12:00:00.000Z"
+                },
+                "total_amount": {
+                  "type": "string",
+                  "example": "52.00"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Venta no encontrada"
+          },
+          "500": {
+            "description": "Error al obtener la venta"
           }
         }
       }
